@@ -1,0 +1,4 @@
+
+Primary color: [#2cab26]
+Secondary color: [#ffd22f]
+Background color: [#000000]
