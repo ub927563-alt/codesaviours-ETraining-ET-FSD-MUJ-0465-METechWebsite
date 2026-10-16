@@ -2,7 +2,9 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+
 const connectDB = require("./config/db");
+const serviceRoutes = require("./routes/serviceRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,6 +27,9 @@ app.get("/api/health", (req, res) => {
     message: "ME Technologies server is running",
   });
 });
+
+// Services API routes
+app.use("/api/services", serviceRoutes);
 
 // Start server after connecting to MongoDB
 const startServer = async () => {
