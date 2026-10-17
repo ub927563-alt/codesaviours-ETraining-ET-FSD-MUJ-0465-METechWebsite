@@ -17,6 +17,7 @@ app.use(express.json());
 // Welcome route
 app.get("/", (req, res) => {
   res.json({
+    success: true,
     message: "Welcome to ME Technologies API",
   });
 });
@@ -24,22 +25,38 @@ app.get("/", (req, res) => {
 // Health check route
 app.get("/api/health", (req, res) => {
   res.json({
+    success: true,
     status: "success",
     message: "ME Technologies server is running",
   });
 });
 
-// Services API routes
+// Services API
 app.use("/api/services", serviceRoutes);
+
+// Contact inquiries API
 app.use("/api/leads", leadRoutes);
+
+// Handle unknown routes
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route not found: ${req.method} ${req.originalUrl}`,
+  });
+});
 
 // Start server after connecting to MongoDB
 const startServer = async () => {
-  await connectDB();
+  try {
+    await connectDB();
 
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error.message);
+    process.exit(1);
+  }
 };
 
 startServer();

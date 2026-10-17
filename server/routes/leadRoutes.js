@@ -48,4 +48,23 @@ router.post("/", async (req, res) => {
   }
 });
 
+/* Get all contact inquiries */
+router.get("/", async (req, res) => {
+  try {
+    const leads = await Lead.find().sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: leads.length,
+      data: leads,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve contact inquiries",
+    });
+  }
+});
+
+
 module.exports = router;
